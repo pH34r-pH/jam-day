@@ -1,0 +1,9 @@
+const statusEl=document.querySelector("#admin-status");const tableWrap=document.querySelector("#table-wrap");const rowsEl=document.querySelector("#rsvp-rows");const totalEl=document.querySelector("#total");const countEl=document.querySelector("#count");
+
+function formatSubmitted(value){if(!value)return "—";const d=new Date(value);return Number.isNaN(d.valueOf())?"—":new Intl.DateTimeFormat(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}).format(d)}
+
+function render(rsvps){const safe=Array.isArray(rsvps)?rsvps:[];const total=safe.reduce((sum,r)=>sum+(Number.isInteger(r.headcount)?r.headcount:0),0);totalEl.textContent=String(total);countEl.textContent=`${safe.length} RSVP${safe.length===1?"":"s"}`;rowsEl.replaceChildren();for(const rsvp of safe){const tr=document.createElement("tr");const name=document.createElement("td");name.textContent=String(rsvp.name||"");const headcount=document.createElement("td");headcount.textContent=String(rsvp.headcount);const submitted=document.createElement("td");submitted.textContent=formatSubmitted(rsvp.submittedAt);tr.append(name,headcount,submitted);rowsEl.append(tr)}statusEl.textContent=safe.length?"":"No RSVPs yet.";statusEl.hidden=safe.length>0;tableWrap.hidden=safe.length===0}
+
+async function load(){try{const response=await fetch("/api/admin/rsvps",{headers:{"accept":"application/json"}});if(response.status===401||response.status===403){statusEl.textContent="This page is only available to the Jam Day host.";statusEl.dataset.kind="error";return}if(!response.ok)throw new Error("request_failed");const result=await response.json();render(result.rsvps)}catch{statusEl.textContent="RSVPs couldn’t be loaded right now.";statusEl.dataset.kind="error"}}
+
+load();
