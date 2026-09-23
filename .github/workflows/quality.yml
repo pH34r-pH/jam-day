@@ -1,0 +1,27 @@
+name: quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Privacy guard
+        run: |
+          set -eu
+          if grep -R -E '212[[:space:]]+Cypress|Cypress[[:space:]]+Ln' --exclude-dir=.git .; then
+            echo "Private event address must not be committed."
+            exit 1
+          fi
+      - name: Required source files
+        run: |
+          test -s site/index.html
+          test -s site/styles.css
+          test -s site/app.js
+          test -s docs/rsvp-api.md
+      - name: Record exact source
+        run: echo "qualified_sha=$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
