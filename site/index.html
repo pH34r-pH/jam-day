@@ -1,65 +1,24 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#35133f">
-  <meta name="description" content="Jam Day III — October 3, 2026 in Snohomish, Washington.">
-  <title>Jam Day III</title>
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" defer></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#2b1236"><meta name="description" content="Jam Day III — October 3, 2026 in Snohomish, Washington.">
+<title>Jam Day III</title><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script>
 </head>
 <body>
-  <main>
-    <header class="hero">
-      <div class="vine" aria-hidden="true">● ● ●</div>
-      <p class="eyebrow">Third annual harvest</p>
-      <h1>Jam <span>Day</span> III</h1>
-      <p class="when"><strong>October 3, 2026</strong><br>10 AM–~7 PM · Snohomish, WA</p>
-      <a class="button" href="#rsvp">RSVP</a>
-    </header>
-
-    <section class="plan" aria-labelledby="plan-title">
-      <p class="section-number" aria-hidden="true">01</p>
-      <div>
-        <h2 id="plan-title">The plan</h2>
-        <p class="lede">Harvest the Concord grapes. Make jam. Can it. Hang out.</p>
-        <p>Come for the day or whatever part of it works for you.</p>
-      </div>
-    </section>
-
-    <section class="bring" aria-labelledby="bring-title">
-      <p class="section-number" aria-hidden="true">02</p>
-      <div>
-        <h2 id="bring-title">Bring</h2>
-        <p class="bring-list">Jars <span>+</span> sugar.</p>
-        <p>We use the Serious Eats Concord grape jam recipe as one batch and scale from there.</p>
-        <p><a href="https://www.seriouseats.com/" rel="noreferrer">Serious Eats recipe ↗</a></p>
-      </div>
-    </section>
-
-    <section class="rsvp" id="rsvp" aria-labelledby="rsvp-title">
-      <p class="section-number" aria-hidden="true">03</p>
-      <div>
-        <h2 id="rsvp-title">RSVP</h2>
-        <form id="rsvp-form">
-          <label>Name <input name="name" autocomplete="name" required maxlength="120"></label>
-          <label>How many people? <input name="headcount" type="number" inputmode="numeric" min="1" max="30" value="1" required></label>
-          <button class="button" type="submit">I'm coming</button>
-          <p id="form-status" class="status" role="status" aria-live="polite"></p>
-        </form>
-        <div id="confirmation" class="confirmation" hidden>
-          <h3>See you at Jam Day.</h3>
-          <p>Saturday, October 3 · 10 AM–~7 PM</p>
-          <p id="private-location"></p>
-          <div class="calendar-actions">
-            <a id="google-calendar" class="text-link" href="#">Add to Google Calendar</a>
-            <a id="ics-calendar" class="text-link" href="#">Download .ics</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer>Jam Day III · 2026</footer>
-</body>
-</html>
+<main>
+<header class="hero">
+  <div class="edition" aria-hidden="true">03 / 2026</div>
+  <div class="grapes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <p class="eyebrow">Third annual harvest · Snohomish, Washington</p>
+  <h1><span>Jam</span><em>Day</em><b>III</b></h1>
+  <div class="hero-foot"><p class="when"><strong>Saturday, October 3</strong><br>10 AM until around 7 PM</p><a class="button" href="#rsvp">RSVP <span>↓</span></a></div>
+</header>
+<section class="plan" aria-labelledby="plan-title"><p class="section-number">01 / THE DAY</p><div><h2 id="plan-title">Harvest.<br>Jam. Can.<br><i>Hang out.</i></h2><p>Come for the day or whatever part of it works for you. We’ll harvest the Concord grapes and turn the vine into this year’s jam.</p></div></section>
+<section class="bring" aria-labelledby="bring-title"><p class="section-number">02 / BRING</p><div><h2 id="bring-title">Jars <i>+</i><br>sugar.</h2><p>That’s it. We use the Serious Eats Concord grape jam recipe as one batch and scale from there.</p><a class="recipe" href="https://www.seriouseats.com/" rel="noreferrer">Our reference recipe <span>↗</span></a></div></section>
+<section class="rsvp" id="rsvp" aria-labelledby="rsvp-title"><p class="section-number">03 / RSVP</p><div><h2 id="rsvp-title">Coming?</h2>
+<form id="rsvp-form"><label><span>Name</span><input name="name" autocomplete="name" required maxlength="120" placeholder="Your name"></label><label><span>How many people?</span><input name="headcount" type="number" inputmode="numeric" min="1" max="30" value="1" required></label><button class="button" type="submit">I’m coming <span>→</span></button><p id="form-status" class="status" role="status" aria-live="polite"></p></form>
+<div id="confirmation" class="confirmation" hidden><p class="eyebrow">RSVP received</p><h3>See you at Jam Day.</h3><p>Saturday, October 3 · 10 AM–~7 PM</p><p id="private-location"></p><div class="calendar-actions"><a id="google-calendar" href="#">Google Calendar ↗</a><a id="ics-calendar" href="#">Download .ics ↓</a></div></div>
+</div></section>
+</main><footer><span>Jam Day III</span><span>October 3, 2026</span></footer>
+</body></html>
