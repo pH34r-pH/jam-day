@@ -25,3 +25,34 @@ jobs:
           test -s docs/rsvp-api.md
       - name: Record exact source
         run: echo "qualified_sha=$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
+
+  visual-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Start static site
+        run: |
+          python3 -m http.server 8000 --directory site > /tmp/jam-day-http.log 2>&1 &
+          echo $! > /tmp/jam-day-http.pid
+          for i in {1..20}; do
+            curl --fail --silent http://127.0.0.1:8000/ >/dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/jam-day-http.log
+          exit 1
+      - name: Render desktop and mobile
+        run: |
+          mkdir -p visual-review
+          chromium --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars             --window-size=1440,1200 --screenshot=visual-review/jam-day-desktop.png             http://127.0.0.1:8000/
+          chromium --headless --no-sandbox --disable-dev-shm-usage --hide-scrollbars             --window-size=390,844 --screenshot=visual-review/jam-day-mobile.png             http://127.0.0.1:8000/
+          test -s visual-review/jam-day-desktop.png
+          test -s visual-review/jam-day-mobile.png
+      - name: Upload visual review
+        uses: actions/upload-artifact@v4
+        with:
+          name: jam-day-visual-review-${{ github.event.pull_request.number || github.run_number }}
+          path: visual-review/*.png
+          retention-days: 3
+          if-no-files-found: error
