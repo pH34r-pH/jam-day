@@ -1,8 +1,11 @@
-const form=document.querySelector("#rsvp-form");const status=document.querySelector("#form-status");const confirmation=document.querySelector("#confirmation");
+const form=document.querySelector("#rsvp-form");
+const status=document.querySelector("#form-status");
+const confirmation=document.querySelector("#confirmation");
+const submit=form.querySelector('button[type="submit"]');
 
 function calendarUrls(event){
-  const start="20261003T170000Z"; // 10:00 PDT
-  const end="20261004T020000Z";   // 19:00 PDT
+  const start="20261003T170000Z";
+  const end="20261004T020000Z";
   const title=encodeURIComponent("Jam Day III");
   const details=encodeURIComponent("Third annual Jam Day. Bring jars + sugar.");
   const location=encodeURIComponent(event.location);
@@ -12,21 +15,35 @@ function calendarUrls(event){
   };
 }
 
-form.addEventListener("submit",async(e)=>{
-  e.preventDefault(); status.textContent="Sending RSVP…";
+function readRsvp(){
   const data=new FormData(form);
-  const payload={name:String(data.get("name")||"").trim(),headcount:Number(data.get("headcount"))};
+  const name=String(data.get("name")||"").trim();
+  const headcount=Number(data.get("headcount"));
+  if(!name || name.length>120 || !Number.isInteger(headcount) || headcount<1 || headcount>30) return null;
+  return {name,headcount};
+}
+
+form.addEventListener("submit",async(e)=>{
+  e.preventDefault();
+  const payload=readRsvp();
+  if(!payload){status.textContent="Please add your name and a valid headcount.";return;}
+
+  submit.disabled=true;
+  status.textContent="Sending RSVP…";
   try{
     const response=await fetch("/api/rsvp",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
     if(!response.ok) throw new Error("rsvp_failed");
     const result=await response.json();
-    if(!result.location) throw new Error("missing_confirmation");
-    form.hidden=true; confirmation.hidden=false;
+    if(result.ok!==true || typeof result.location!=="string" || !result.location.trim()) throw new Error("missing_confirmation");
+
+    form.hidden=true;
+    confirmation.hidden=false;
     document.querySelector("#private-location").textContent=result.location;
     const urls=calendarUrls({location:result.location});
     document.querySelector("#google-calendar").href=urls.google;
     document.querySelector("#ics-calendar").href=urls.ics;
   }catch{
-    status.textContent="RSVP isn't available here yet. Please try again later.";
+    submit.disabled=false;
+    status.textContent="RSVP isn't available right now. Please try again.";
   }
 });
