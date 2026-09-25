@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "repository": "pH34r-pH/jam-day",
+  "manifests": [{"path":".github/workflows/quality.yml","kind":"workflow"}],
+  "profiles": {
+    "static-checks": {
+      "phases":["test"],
+      "platforms":[{"os":"linux","arch":"amd64","abi":"glibc"}],
+      "tools":{"bash":{"sources":[".github/workflows/quality.yml"]},"grep":{"sources":[".github/workflows/quality.yml"]}},
+      "entrypoints":[],
+      "notes":"Use the existing privacy/source-file gates. Private event configuration and RSVP data are never public build inputs."
+    },
+    "visual-review": {
+      "phases":["test"],
+      "platforms":[{"os":"linux","arch":"amd64","abi":"glibc"}],
+      "tools":{
+        "python":{"sources":[".github/workflows/quality.yml"]},
+        "curl":{"sources":[".github/workflows/quality.yml"]},
+        "chromium":{"sources":[".github/workflows/quality.yml"],"notes":"Require a usable headless browser and its system libraries; command availability alone does not establish successful rendering."}
+      },
+      "entrypoints":["python3 -m http.server 8000 --directory site"],
+      "notes":"The current workflow owns desktop/mobile rendering commands. Backend Function packaging and private runtime requirements belong to Fleet, not an invented public build stack."
+    }
+  }
+}
