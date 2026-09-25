@@ -2,6 +2,7 @@ const form=document.querySelector("#rsvp-form");
 const status=document.querySelector("#form-status");
 const confirmation=document.querySelector("#confirmation");
 const submit=form.querySelector('button[type="submit"]');
+const apiBase="https://jamdayapi3f85618eecc2446c887f1ba78b11b78.azurewebsites.net";
 
 function calendarUrls(event){
   const start="20261003T170000Z";
@@ -31,7 +32,7 @@ form.addEventListener("submit",async(e)=>{
   submit.disabled=true;
   status.textContent="Sending RSVP…";
   try{
-    const response=await fetch("/api/rsvp",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
+    const response=await fetch(`${apiBase}/api/rsvp`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(payload)});
     if(!response.ok) throw new Error("rsvp_failed");
     const result=await response.json();
     if(result.ok!==true || typeof result.location!=="string" || !result.location.trim()) throw new Error("missing_confirmation");
