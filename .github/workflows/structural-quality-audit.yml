@@ -66,6 +66,26 @@ jobs:
           echo "jscpd_status=$status" >> "$GITHUB_STEP_SUMMARY"
           exit 0
 
+      - name: Enforce zero structural debt
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          count_eslint() { grep -Eo '✖ [0-9]+ problems?' "$1" | tail -1 | grep -Eo '[0-9]+' || echo 0; }
+          count_lizard() { grep -c 'warning: .* NLOC,' "$1" || true; }
+          count_clones() { grep -Eo 'Found [0-9]+ clones?\.' "$1" | tail -1 | grep -Eo '[0-9]+' || echo 0; }
+          eslint_count="$(count_eslint quality-audit/eslint-structural.txt)"
+          lizard_count="$(count_lizard quality-audit/lizard.txt)"
+          clone_count="$(count_clones quality-audit/jscpd-console.txt)"
+          {
+            echo; echo "### Quality gate"; echo "- ESLint structural findings: $eslint_count"
+            echo "- Lizard structural findings: $lizard_count"
+            echo "- jscpd clone blocks: $clone_count"
+          } >> "$GITHUB_STEP_SUMMARY"
+          test "$eslint_count" -eq 0 || { echo "::error::Jam Day must remain free of ESLint structural findings"; exit 1; }
+          test "$lizard_count" -eq 0 || { echo "::error::Jam Day must remain free of Lizard structural findings"; exit 1; }
+          test "$clone_count" -eq 0 || { echo "::error::Jam Day must remain free of copy/paste clone blocks"; exit 1; }
+
       - name: Upload audit evidence
         if: always()
         uses: actions/upload-artifact@v4
