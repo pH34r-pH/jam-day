@@ -4,6 +4,13 @@
 
 RSVP is deliberately approximate planning data: who is coming and roughly how many people to expect. It is not an attendee account or registration-management system.
 
+## Source and ownership
+
+The public form lives in [`../site/index.html`](../site/index.html), and its
+request behavior lives in [`../site/app.js`](../site/app.js). The production
+handler, persistence, private location, and host view belong to Fleet; this
+repository documents their boundary but does not implement those resources.
+
 ## `POST /api/rsvp`
 
 Request:
@@ -13,6 +20,7 @@ Request:
 ```
 
 Rules:
+
 - `name`: trimmed, non-empty string, maximum 120 characters.
 - `headcount`: integer from 1 through 30.
 - Ignore/reject additional attendee fields; the client sends only these two values.

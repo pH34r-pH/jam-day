@@ -2,6 +2,11 @@
 
 Production infrastructure owns authentication, authorization, storage and routing for this endpoint.
 
+The public admin page is [`../site/admin/index.html`](../site/admin/index.html)
+with browser behavior in [`../site/admin/admin.js`](../site/admin/admin.js).
+Those files may request the contract, but they do not own organizer identity,
+authentication, persistence, or private event configuration.
+
 ## `GET /api/admin/rsvps`
 
 The endpoint is **not anonymous**. Production must authenticate the caller and verify the configured organizer allowlist before returning any RSVP data.
