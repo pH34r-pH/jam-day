@@ -1,0 +1,66 @@
+name: Documentation and artifact quality
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Changed documentation and artifacts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Resolve comparison base
+        id: base
+        shell: bash
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [[ -z "$base" || "$base" == "0000000000000000000000000000000000000000" ]]; then base="HEAD^"; fi
+          echo "sha=$base" >> "$GITHUB_OUTPUT"
+      - name: Check changed paths
+        run: python3 -I scripts/check_documentation_artifacts.py --base "${{ steps.base.outputs.sha }}"
+      - name: Regression tests for the guard
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+      - name: Markdown style on changed living docs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t docs < <(python3 -I scripts/check_documentation_artifacts.py --base "${{ steps.base.outputs.sha }}" --print-markdown-files)
+          if ((${#docs[@]} == 0)); then exit 0; fi
+          NPM_CONFIG_CACHE="$RUNNER_TEMP/npm-cache" npx --yes markdownlint-cli2@0.18.1 "${docs[@]}"
+      - name: Install pinned lychee
+        uses: lycheeverse/lychee-action@v2.4.1
+        with:
+          lycheeVersion: v0.20.1
+          args: --version
+          failIfEmpty: false
+      - name: Local-link check on changed living docs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t docs < <(python3 -I scripts/check_documentation_artifacts.py --base "${{ steps.base.outputs.sha }}" --print-markdown-files)
+          if ((${#docs[@]} == 0)); then exit 0; fi
+          lychee --offline --no-progress --root-dir "$GITHUB_WORKSPACE" "${docs[@]}"
+      - name: Prove broken local links are rejected
+        shell: bash
+        run: |
+          set -euo pipefail
+          fixture="$RUNNER_TEMP/documentation-broken-link.md"
+          printf '[broken](missing-target.md)\n' > "$fixture"
+          if lychee --offline --no-progress --root-dir "$RUNNER_TEMP" "$fixture"; then
+            echo "lychee unexpectedly accepted the broken-link fixture" >&2
+            exit 1
+          fi
