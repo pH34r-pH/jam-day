@@ -10,7 +10,9 @@ from scripts.check_documentation_artifacts import changed_files, path_errors
 class DocumentationGuardTests(unittest.TestCase):
     def test_rejects_issue_number_only_and_temp_paths(self):
         self.assertTrue(path_errors("A", "docs/issue-123.md"))
+        self.assertEqual(path_errors("A", "evidence/issue-123.md"), [])
         self.assertTrue(path_errors("A", "evidence/.cache/receipt.json"))
+        self.assertTrue(path_errors("A", "evidence/.cache/issue-123.md"))
         self.assertEqual(path_errors("A", "docs/architecture.md"), [])
         self.assertEqual(path_errors("A", "docs/overview.md"), [])
 

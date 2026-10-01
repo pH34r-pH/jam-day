@@ -70,7 +70,7 @@ def path_errors(status: str, relative: str) -> list[str]:
         errors.append(f"{relative}: new temporary/build artifact is not approved")
     if status in {"A", "C", "R"} and relative.endswith(".md"):
         name = Path(relative).name
-        if ISSUE_ONLY_RE.fullmatch(name):
+        if ISSUE_ONLY_RE.fullmatch(name) and not is_historical(relative):
             errors.append(f"{relative}: new documentation needs a descriptive name")
         elif not is_historical(relative) and name not in {"README.md", "AGENTS.md"} and not DOC_NAME_RE.fullmatch(name):
             errors.append(f"{relative}: new living docs need lowercase kebab-case names")
