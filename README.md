@@ -1,5 +1,7 @@
 # Jam Day
 
+![Jam Day — Make something good together.](docs/assets/hero.png)
+
 Public source for **Jam Day III** — October 3, 2026 in Snohomish, Washington.
 
 This repository owns the public event page, RSVP client/API contract, calendar helpers, tests, and unprivileged CI. Production Azure resources, RSVP persistence, private event location, DNS, and deployment authority live in the private `pH34r-pH/long-haul-fleet` repository.
