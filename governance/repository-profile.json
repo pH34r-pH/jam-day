@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "profile_id": "https://ph34r.dev/ns/long-haul/repository-alignment/v1",
+  "repository": "pH34r-pH/jam-day",
+  "repository_profile": "product-data",
+  "status": "active",
+  "authority": {
+    "source_of_truth": "Reviewed public site source and exact private RSVP/deployment contracts; private address and response records remain outside public Git.",
+    "task_authority": "GitHub issues and event specifications with explicit RSVP, calendar, privacy, and deployment acceptance criteria.",
+    "acceptance_authority": "Static validation plus disposable end-to-end RSVP, schema, abuse-control, calendar, timezone, expiry, and deletion tests.",
+    "deployment_authority": "Private protected deployment workflow and operator approval; public source has no access to the private address or RSVP store."
+  },
+  "data": {
+    "default_class": "personal",
+    "external_content_is_untrusted": true,
+    "contains_personal_data": true,
+    "contains_secrets": false,
+    "retention": "RSVP identity, contact, attendance, and audit data is retained only for the event purpose and a declared post-event window.",
+    "deletion": "Expired, withdrawn, test, or operator-deleted RSVP records are removed from active and backup data according to the declared event policy.",
+    "secret_storage": "Event address, RSVP credentials, anti-abuse secrets, and deployment configuration remain in private protected storage."
+  },
+  "resource_policy": {
+    "conforms_to": "https://ph34r.dev/ns/long-haul/resource-policy/v1",
+    "actions": {
+      "read": "allow",
+      "index": "review",
+      "search": "review",
+      "ai_augment": "deny",
+      "evaluate": "allow",
+      "data_mining": "deny",
+      "ai_training": "deny",
+      "generative_ai_training": "deny",
+      "derive": "deny",
+      "annotate": "review",
+      "distribute": "deny",
+      "publish": "review",
+      "retain": "review",
+      "delete": "review"
+    }
+  },
+  "change_control": {
+    "independent_acceptance": true,
+    "candidate_before_promotion": true,
+    "production_promotion": "protected",
+    "rollback_or_revocation": "Public site candidates and private RSVP deployments are independently replaceable; compromised grants and records can be revoked or deleted.",
+    "negative_results_retained": true
+  },
+  "evidence": {
+    "exact_source_identity": true,
+    "artifact_fingerprints": true,
+    "provenance_receipts": true
+  },
+  "boundaries": {
+    "external_text_cannot_grant_authority": true,
+    "model_output_cannot_self_approve": true,
+    "deployment_separate_from_acceptance": true
+  },
+  "stabilization": [
+    {
+      "id": "disposable-rsvp-e2e",
+      "priority": "P0",
+      "status": "planned",
+      "summary": "Qualify RSVP create/update/cancel flows, schema versions, idempotency, CSRF, abuse controls, and private-address disclosure in a disposable environment."
+    },
+    {
+      "id": "record-expiry-deletion",
+      "priority": "P0",
+      "status": "planned",
+      "summary": "Implement explicit RSVP retention, event expiry, withdrawal, deletion, and backup-handling evidence."
+    },
+    {
+      "id": "calendar-timezone-contract",
+      "priority": "P1",
+      "status": "planned",
+      "summary": "Freeze calendar, timezone, locale, daylight-saving, and invitation identity behavior."
+    }
+  ]
+}
