@@ -7,7 +7,7 @@ with browser behavior in [`../site/admin/admin.js`](../site/admin/admin.js).
 Those files may request the contract, but they do not own organizer identity,
 authentication, persistence, or private event configuration.
 
-## `GET /api/admin/rsvps`
+## `GET /api/organizer/rsvps`
 
 The endpoint is **not anonymous**. Production must authenticate the caller and verify the configured organizer allowlist before returning any RSVP data.
 
@@ -25,9 +25,11 @@ Success:
 }
 ```
 
-Only `name` and `headcount` are required. `submittedAt` is optional operational metadata.
+Each record requires a nonempty name and an integer headcount from 1 through 30.
+The submission timestamp is optional operational metadata.
 
-The frontend computes the total expected headcount from returned records.
+The browser validates the list before displaying any records and computes the
+total expected headcount from the verified response shape.
 
 Unauthorized callers receive 401/403 with no attendee data, totals, storage metadata, private event configuration or organizer identity.
 
