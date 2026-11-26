@@ -22,7 +22,13 @@ jobs:
           test -s site/index.html
           test -s site/styles.css
           test -s site/app.js
+          test -s site/calendar.js
           test -s docs/rsvp-api.md
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Validate calendar and disposable RSVP behavior
+        run: node --test scripts/test_calendar.mjs
       - name: Record exact source
         run: echo "qualified_sha=$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
 
