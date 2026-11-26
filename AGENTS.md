@@ -25,7 +25,7 @@ site/index.html + site/app.js
         -> approximate planning record (name/headcount)
 
 site/admin/*
-        -> authenticated GET /api/admin/rsvps
+        -> authenticated GET /api/organizer/rsvps
         -> private Fleet host view and summed headcount
 ```
 

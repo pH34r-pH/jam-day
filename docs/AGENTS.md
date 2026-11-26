@@ -5,7 +5,7 @@
 [`rsvp-api.md`](rsvp-api.md) owns the public `POST /api/rsvp` request,
 validation, duplicate-submit boundary, generic errors, and the rule that the
 production `location` value is private. [`admin-api.md`](admin-api.md) owns the
-authenticated `GET /api/admin/rsvps` response and the no-anonymous-data rule.
+authenticated `GET /api/organizer/rsvps` response and the no-anonymous-data rule.
 Fleet owns the actual handler, identity, storage, routing, and host view.
 
 The browser consumers are [`../site/app.js`](../site/app.js) and
