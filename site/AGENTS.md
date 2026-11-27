@@ -10,7 +10,7 @@ contract. There is no build step or bundler, and the files are served as-is.
 
 The public form validates the small RSVP payload in the browser, then sends it
 to `POST /api/rsvp`; production supplies the private location only after a
-successful response. The admin page requests `GET /api/admin/rsvps` only
+successful response. The admin page requests `GET /api/organizer/rsvps` only
 through an authenticated production boundary. Do not add secrets, private
 addresses, attendee records, storage details, or production configuration to
 these files.

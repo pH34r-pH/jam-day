@@ -17,7 +17,7 @@ function fields(ics) {
   );
 }
 
-test("the public event and both calendar links represent the same Pacific-time interval", async () => {
+test("the public event, RSVP confirmation and both calendar links agree on the Pacific-time interval", async () => {
   const location = "Synthetic hall";
   const urls = calendarUrls(location);
   const entry = fields(calendarFile(urls.ics));
@@ -31,6 +31,8 @@ test("the public event and both calendar links represent the same Pacific-time i
   for (const [stamp, label] of [[jamDay.startsAt, "10 AM"], [jamDay.endsAt, "7 PM"]]) {
     assert.ok(html.includes(`<time datetime="${stamp}">${label}</time>`));
   }
+  const confirmation = html.match(/<div id="confirmation"[^>]*>([\s\S]*?)<p id="private-location">/)?.[1];
+  assert.ok(confirmation?.includes(`<p>${startDay} · 10 AM–~7 PM</p>`), "confirmation shows the same event schedule");
   assert.equal(entry.DTSTART, "20261003T170000Z");
   assert.equal(entry.DTEND, "20261004T020000Z");
   assert.equal(google.get("dates"), `${entry.DTSTART}/${entry.DTEND}`);
