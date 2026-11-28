@@ -16,7 +16,7 @@ python3 -m http.server 8000 --directory site
 
 Open `http://localhost:8000`.
 
-The production RSVP endpoint is `POST /api/rsvp`. For local visual development, the form reports that RSVP is unavailable unless a compatible local endpoint is provided.
+Jam Day III has ended and RSVPs are closed. The current page does not load the RSVP client; the retained client and `POST /api/rsvp` contract are available for a future event. The production RSVP endpoint is disabled.
 
 ## Privacy boundary
 
@@ -26,8 +26,8 @@ See issues #1–#3 for the initial product, visual, and API contracts.
 
 ## Repository map and status
 
-The living public surface is [`site/`](site/), where `index.html` and
-`app.js` collect an RSVP and call the production API. The admin page under
+The living public surface is [`site/`](site/). `index.html` currently shows
+the closed RSVP notice; `app.js` retains the RSVP client for future use. The admin page under
 [`site/admin/`](site/admin/) reads the private admin contract; production
 authentication, storage, routing, and the private location remain outside
 this repository. Contract ownership and data boundaries are mapped in
