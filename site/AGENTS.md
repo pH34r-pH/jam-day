@@ -8,9 +8,10 @@ contract. There is no build step or bundler, and the files are served as-is.
 
 ## Flow and invariants
 
-The public form validates the small RSVP payload in the browser, then sends it
-to `POST /api/rsvp`; production supplies the private location only after a
-successful response. The admin page requests `GET /api/organizer/rsvps` only
+The current public page shows that RSVPs are closed and does not load the
+retained RSVP client. When enabled for a future event, that client validates
+the small RSVP payload and sends it to `POST /api/rsvp`; production supplies
+the private location only after a successful response. The admin page requests `GET /api/organizer/rsvps` only
 through an authenticated production boundary. Do not add secrets, private
 addresses, attendee records, storage details, or production configuration to
 these files.
